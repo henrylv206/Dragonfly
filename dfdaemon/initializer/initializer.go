@@ -187,7 +187,9 @@ func initParam(options *options.Options) {
 		os.Exit(constant.CodeExitRateLimitInvalid)
 	}
 
-	if options.Port <= 2000 || options.Port > 65535 {
+	// henrylv206: cancel port(<= 2000) restriction 
+	// if options.Port <= 2000 || options.Port > 65535 {
+	if options.Port > 65535 {
 		os.Exit(constant.CodeExitPortInvalid)
 	}
 
