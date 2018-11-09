@@ -69,8 +69,10 @@ func Process(w http.ResponseWriter, r *http.Request) {
 		// TODO: we do not need such check actually, anything that served
 		// by dfdaemon should only be accessed by localhost which should
 		// be controlled by the listener addr.
-		w.WriteHeader(http.StatusForbidden)
-		return
+		
+		// henrylv206: do nothing
+		//w.WriteHeader(http.StatusForbidden)
+		//return
 	}
 
 	log.Debugf("post access:%s", targetURL.String())
