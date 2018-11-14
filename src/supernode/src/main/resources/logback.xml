@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="false">
+<configuration debug="true">
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
 
-    <property name="LOG_HOME" value="${LOG_HOME:-${supernode.baseHome:-/home/admin/supernode}/logs}"/>
-    <property name="LOG_LEVEL" value="${LOG_LEVEL:-INFO}"/>
+    <property name="LOG_HOME" value="${LOG_HOME:-${supernode.baseHome:-/tmp/supernode}/logs}"/>
+    <property name="LOG_LEVEL" value="${LOG_LEVEL:-DEBUG}"/>
     <property name="LOG_APPENDER" value="${LOG_APPENDER:-STDOUT}"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -75,7 +75,7 @@
 
     <logger name="com.alibaba.dragonfly.supernode" level="${LOG_LEVEL}"
             additivity="false">
-        <appender-ref ref="APP"/>
+        <appender-ref ref="STDOUT"/>
     </logger>
 
     <logger name="PieceHitLogger" level="${LOG_LEVEL}" additivity="false">
@@ -88,11 +88,11 @@
 
 
     <logger name="DownloaderLogger" level="${LOG_LEVEL}" additivity="false">
-        <appender-ref ref="DOWNLOADER"/>
+        <appender-ref ref="STDOUT"/>
     </logger>
 
     <logger name="SpaceGcLogger" level="${LOG_LEVEL}" additivity="false">
-        <appender-ref ref="SPACEGC"/>
+        <appender-ref ref="STDOUT"/>
     </logger>
 
     <root level="${LOG_LEVEL}">

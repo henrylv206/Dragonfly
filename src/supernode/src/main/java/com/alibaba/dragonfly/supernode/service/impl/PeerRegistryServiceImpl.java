@@ -67,16 +67,21 @@ public class PeerRegistryServiceImpl implements PeerRegistryService {
         throws ValidateException {
         ResultInfo resultInfo = new ResultInfo();
         validateParams(sourceUrl, port, path, peerInfo);
+        
+        // LV generate current super node's ip and cid
         if (Constants.localIp == null) {
             Constants.localIp = superNodeIp;
             Constants.generateNodeCid();
         }
 
+        // LV create Task and taskId
         Task task = new Task(sourceUrl, taskUrl, md5, bizId, headers, dfdaemon, peerInfo.getIp());
         String taskId = taskService.createTaskId(taskUrl, md5, bizId);
 
         task.setTaskId(taskId);
-        lockService.lockTaskOnRead(taskId);
+        lockService.lockTaskOnRead(taskId); // LV lock read
+        
+        
         TaskRegistryResult taskRegistryResult = new TaskRegistryResult();
         try {
             task = taskService.add(task);
@@ -101,8 +106,9 @@ public class PeerRegistryServiceImpl implements PeerRegistryService {
         } catch (AuthenticationWaitedException e) {
             resultInfo.withCode(ResultCode.WAIT_AUTH);
         } finally {
-            lockService.unlockTaskOnRead(taskId);
+            lockService.unlockTaskOnRead(taskId); // LV unlock read
         }
+        
         return resultInfo;
     }
 
@@ -129,8 +135,7 @@ public class PeerRegistryServiceImpl implements PeerRegistryService {
         }
     }
 
-    private void registryPeerNode(ResultInfo resultInfo, TaskRegistryResult taskRegistryResult, String taskId,
-        PeerInfo peerInfo, PeerTask peerTask) {
+    private void registryPeerNode(ResultInfo resultInfo, TaskRegistryResult taskRegistryResult, String taskId, PeerInfo peerInfo, PeerTask peerTask) {
         peerService.add(peerInfo);
         peerTaskService.add(peerTask);
 

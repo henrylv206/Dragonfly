@@ -68,7 +68,7 @@ public class PeerController {
     private LockService lockService;
 
     @PostMapping(value = "/registry")
-    public ResultInfo doRegistry( RegistryRequest req) {
+    public ResultInfo doRegistry( RegistryRequest req) { // LV Content-Type: application/x-www-form-urlencoded
         ResultInfo res = null;
         try {
             res = peerRegistryService.registryTask(req.getRawUrl(),
@@ -94,7 +94,7 @@ public class PeerController {
     }
 
     @PostMapping(value = "/registry", consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResultInfo doRegistryWithJson(@RequestBody RegistryRequest req) {
+    public ResultInfo doRegistryWithJson(@RequestBody RegistryRequest req) { // LV Content-Type: application/json
         return doRegistry(req);
     }
 

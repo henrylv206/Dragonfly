@@ -42,9 +42,7 @@ public class TaskServiceImpl implements TaskService {
     private TaskRepository taskRepo;
 
     @Override
-    public Task add(Task task)
-        throws TaskIdDuplicateException, UrlNotReachableException, AuthenticationRequiredException,
-        AuthenticationWaitedException {
+    public Task add(Task task) throws TaskIdDuplicateException, UrlNotReachableException, AuthenticationRequiredException, AuthenticationWaitedException {
         return taskRepo.add(task);
     }
 

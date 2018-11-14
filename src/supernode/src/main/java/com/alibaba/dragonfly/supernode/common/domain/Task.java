@@ -19,13 +19,20 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.alibaba.dragonfly.supernode.common.enumeration.CdnStatus;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.alibaba.dragonfly.supernode.common.enumeration.CdnStatus;
+
+@Entity
 public class Task {
 
+	@Id
     private String taskId;
+    
     private String sourceUrl;
     private String taskUrl;
     private String bizId;
@@ -37,8 +44,12 @@ public class Task {
     private volatile String realMd5;
     private volatile Integer pieceTotal = -1;
     private volatile CdnStatus cdnStatus = CdnStatus.WAIT;
+    
+    @Transient
     private ConcurrentHashMap<Integer, String> pieceMd5Map = new ConcurrentHashMap<>();
 
+    private String[] pieceMd5;
+    
     private Integer pieceSize;
 
     private volatile boolean notReachable;
@@ -52,7 +63,12 @@ public class Task {
      * df-daemon field
      */
     private boolean dfdaemon;
+    
+    @Transient
     private Set<String> authIps;
+    
+    private String peerIps;
+    
     private String curIp;
 
     private static int AUTH_IP_LIMIT = 5;

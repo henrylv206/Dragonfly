@@ -17,19 +17,24 @@ package com.alibaba.dragonfly.supernode.repository;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.alibaba.dragonfly.supernode.common.domain.PeerInfo;
-
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.alibaba.dragonfly.supernode.common.domain.PeerInfo;
+import com.alibaba.dragonfly.supernode.dao.PeerDao;
 
 @Repository
 public class PeerRepository {
     private static final ConcurrentHashMap<String, PeerInfo> peerMap = new ConcurrentHashMap<String, PeerInfo>();
 
+    @Autowired
+	private PeerDao peerDao;
+    
     public boolean add(PeerInfo peerInfo) {
         String cid = peerInfo.getCid();
         if (StringUtils.isNotBlank(cid)) {
-            peerMap.putIfAbsent(cid, peerInfo);
+            peerMap.putIfAbsent(cid, peerInfo); // LV save to memory
             return true;
         }
         return false;

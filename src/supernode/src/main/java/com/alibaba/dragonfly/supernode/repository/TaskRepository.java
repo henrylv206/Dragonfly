@@ -17,6 +17,11 @@ package com.alibaba.dragonfly.supernode.repository;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.alibaba.dragonfly.supernode.common.Constants;
 import com.alibaba.dragonfly.supernode.common.domain.Task;
 import com.alibaba.dragonfly.supernode.common.enumeration.CdnStatus;
@@ -25,27 +30,34 @@ import com.alibaba.dragonfly.supernode.common.exception.AuthenticationWaitedExce
 import com.alibaba.dragonfly.supernode.common.exception.TaskIdDuplicateException;
 import com.alibaba.dragonfly.supernode.common.exception.UrlNotReachableException;
 import com.alibaba.dragonfly.supernode.common.util.HttpClientUtil;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
+import com.alibaba.dragonfly.supernode.dao.TaskDao;
 
 @Repository
 public class TaskRepository {
+	
+	@Autowired
+	private TaskDao taskDao;
 
     private static final Logger logger = LoggerFactory.getLogger(TaskRepository.class);
 
     private final static ConcurrentHashMap<String, Task> taskMap = new ConcurrentHashMap<>();
 
-    public Task add(Task task)
-        throws TaskIdDuplicateException, UrlNotReachableException, AuthenticationRequiredException,
-        AuthenticationWaitedException {
+    public Task add(Task task) throws TaskIdDuplicateException, UrlNotReachableException, AuthenticationRequiredException, AuthenticationWaitedException {
         String tmpId = task.getTaskId();
-        Task existTask = taskMap.putIfAbsent(tmpId, task);
+        Task existTask = taskMap.putIfAbsent(tmpId, task); // LV save to memory
+        
+        // LV save to db
+        try {
+        	taskDao.save(task);
+        } catch (Exception e) {
+        	logger.error("save task failed.", e);
+        }
+        
         if (existTask != null && !existTask.equals(task)) {
             throw new TaskIdDuplicateException(tmpId, "taskId conflict");
         }
-        existTask = existTask != null ? existTask : task;
+        
+        existTask = existTask != null ? existTask : task; //TODO LV null? taskMap[taskId] is still null?
 
         if (existTask.isNotReachable()) {
             throw new UrlNotReachableException();

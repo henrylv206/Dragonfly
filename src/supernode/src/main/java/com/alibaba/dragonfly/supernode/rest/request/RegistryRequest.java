@@ -25,20 +25,22 @@ import lombok.Data;
  */
 @Data
 public class RegistryRequest {
-    private String cid;
-    private String ip;
-    private String hostName;
-    private String rawUrl;
+	
+    private String cid; // LV dfget id, one process one cid
+    
+    private String ip; // LV dfget ip
+    private String hostName; // LV dfget hostname
+    private String rawUrl; // 
     private String taskUrl;
     private String md5;
     private String identifier;
-    private String port;
-    private String path;
-    private String version;
-    private String superNodeIp;
+    private String port; // LV dfget port
+    private String path; // LV dfget serve path
+    private String version; // LV dfget version
+    private String superNodeIp; // LV supernode ip
     /**
      * ["a:b","c:d","c:e"]
      */
     private String[] headers;
-    private boolean dfdaemon;
+    private boolean dfdaemon; // LV whether call from dfdaemon
 }

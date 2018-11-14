@@ -22,8 +22,8 @@ public final class Constants {
 
     public static final int PORT = 8001;
 
-    public static String localIp;
-    public static String SUPER_NODE_CID = null;
+    public static String localIp; // LV current super node's ip
+    public static String SUPER_NODE_CID = null; // LV current super node's cdn id
 
     public static final int FAIL_COUNT_LIMIT = 5;
 
@@ -32,7 +32,7 @@ public final class Constants {
     //-------------------------------------------------------------------------
     // directories
 
-    public static final String DEFAULT_BASE_HOME = "/home/admin/supernode";
+    public static final String DEFAULT_BASE_HOME = "/tmp/supernode";
     public static final String HTTP_SUB_PATH = "/qtdown/";
     public static final String DOWN_SUB_PATH = "/download/";
 
@@ -47,6 +47,9 @@ public final class Constants {
      * 4 bytes head and 1 byte tail
      */
     public static final int PIECE_HEAD_SIZE = 4;
+    
+    public static final int PIECE_TAIL_SIZE = 1; // LV
+    
     /**
      * can not change
      */

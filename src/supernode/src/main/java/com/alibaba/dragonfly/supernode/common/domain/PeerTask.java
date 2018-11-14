@@ -15,13 +15,21 @@
  */
 package com.alibaba.dragonfly.supernode.common.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 import com.alibaba.dragonfly.supernode.common.enumeration.PeerTaskStatus;
 
+@Entity
 public class PeerTask {
 
+	@Id
+	private String cid;
+	
     private String taskId;
+    
     private Integer pieceSize;
-    private String cid;
+    
     private int port;
     private String path;
     private volatile PeerTaskStatus status = PeerTaskStatus.WAIT;

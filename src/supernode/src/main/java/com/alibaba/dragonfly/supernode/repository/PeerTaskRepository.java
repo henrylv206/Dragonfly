@@ -19,23 +19,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.alibaba.dragonfly.supernode.common.domain.PeerTask;
 import com.alibaba.dragonfly.supernode.common.enumeration.PeerTaskStatus;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Repository;
+import com.alibaba.dragonfly.supernode.dao.PeerTaskDao;
 
 @Repository
 public class PeerTaskRepository {
 
     private static final ConcurrentHashMap<String, PeerTask> peerTaskMap = new ConcurrentHashMap<String, PeerTask>();
 
+    @Autowired
+	private PeerTaskDao peerTaskDao;
+    
     public boolean add(PeerTask peerTask) {
         String key = makeKey(peerTask.getCid(), peerTask.getTaskId());
         if (key == null) {
             return false;
         }
-        peerTaskMap.putIfAbsent(key, peerTask);
+        peerTaskMap.putIfAbsent(key, peerTask); // LV save to memory
+        
+        // TODO save to db
+        
+        
         return true;
     }
 

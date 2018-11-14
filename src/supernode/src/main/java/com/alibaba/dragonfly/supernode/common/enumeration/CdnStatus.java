@@ -22,6 +22,7 @@ public enum CdnStatus {
     FAIL(2),
     SUCCESS(3),
     SOURCE_ERROR(4);
+	
     private int status;
 
     CdnStatus(int status) {

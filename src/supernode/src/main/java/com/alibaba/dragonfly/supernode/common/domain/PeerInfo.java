@@ -17,11 +17,17 @@ package com.alibaba.dragonfly.supernode.common.domain;
 
 import java.util.Map;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class PeerInfo {
 
-    private String cid;
-    private String ip;
-    private String hostName;
+	@Id
+    private String cid; // LV dfget id
+	
+    private String ip; // LV dfget ip
+    private String hostName; // LV dfget hostname
 
     public static PeerInfo newInstance(Map<String, String> params) {
         PeerInfo peerInfo = new PeerInfo();
