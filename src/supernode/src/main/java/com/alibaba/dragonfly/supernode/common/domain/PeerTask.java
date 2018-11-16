@@ -24,6 +24,8 @@ import com.alibaba.dragonfly.supernode.common.enumeration.PeerTaskStatus;
 public class PeerTask {
 
 	@Id
+	private String keyId;
+	
 	private String cid;
 	
     private String taskId;
@@ -45,7 +47,15 @@ public class PeerTask {
     public PeerTask() {
     }
 
-    public boolean isSuccess() {
+	public String getKeyId() {
+		return keyId;
+	}
+
+	public void setKeyId(String keyId) {
+		this.keyId = keyId;
+	}
+
+	public boolean isSuccess() {
         return status != null && status.isSuccess();
     }
 

@@ -42,7 +42,12 @@ compileSupernode() {
 buildDockerImage() {
     echo "====================================================================="
     info "supernode:image" "building image..."
+
+    cp target/supernode.jar src/main/docker/supernode.jar
+
     mvn clean package -DskipTests docker:build
+
+    docker push j-hub.jd.com/jdevops/supernode:0.2.0
 }
 
 check() {

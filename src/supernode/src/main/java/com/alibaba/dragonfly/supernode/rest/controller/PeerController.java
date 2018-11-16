@@ -16,7 +16,14 @@
 
 package com.alibaba.dragonfly.supernode.rest.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dragonfly.supernode.common.domain.PeerInfo;
 import com.alibaba.dragonfly.supernode.common.enumeration.PeerPieceStatus;
@@ -35,14 +42,6 @@ import com.alibaba.dragonfly.supernode.service.scheduler.ProgressService;
 import com.alibaba.fastjson.JSON;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author lowzj
@@ -51,9 +50,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/peer")
 @Slf4j
 public class PeerController {
-
-    @Autowired
-    private HttpServletRequest request;
 
     @Autowired
     private PeerRegistryService peerRegistryService;
@@ -182,8 +178,8 @@ public class PeerController {
     }
 
     private void debug(String msg, Object req, ResultInfo res) {
-        if (log.isDebugEnabled()) {
-            log.debug("{}, req: {} res: {}", msg, JSON.toJSONString(req), JSON.toJSON(res));
-        }
+        // TODO LV change to debug // if (log.isDebugEnabled()) {
+            log.info("{}, req: {} res: {}", msg, JSON.toJSONString(req), JSON.toJSON(res));
+        //}
     }
 }

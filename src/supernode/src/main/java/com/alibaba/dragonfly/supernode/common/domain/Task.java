@@ -67,7 +67,7 @@ public class Task {
     @Transient
     private Set<String> authIps;
     
-    private String peerIps;
+    private String[] peerIps;
     
     private String curIp;
 
@@ -274,9 +274,24 @@ public class Task {
             return;
         }
         authIps.add(ip);
+        
+        // LV
+        try {
+        	peerIps = authIps.toArray(new String[authIps.size()]);
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
     }
+    
+    public String[] getPeerIps() {
+		return peerIps;
+	}
 
-    public String getCurIp() {
+	public void setPeerIps(String[] peerIps) {
+		this.peerIps = peerIps;
+	}
+
+	public String getCurIp() {
         return curIp;
     }
 

@@ -132,7 +132,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>1.0.0</version>
                 <configuration>
-                    <imageName>${project.name}:${project.version}</imageName>
+                    <imageName>j-hub.jd.com/jdevops/${project.name}:${project.version}</imageName>
                     <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
                     <skipDockerBuild>false</skipDockerBuild>
                     <resources>

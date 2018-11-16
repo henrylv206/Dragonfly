@@ -46,12 +46,12 @@ public class TaskRepository {
         String tmpId = task.getTaskId();
         Task existTask = taskMap.putIfAbsent(tmpId, task); // LV save to memory
         
-        // LV save to db
-        try {
-        	taskDao.save(task);
-        } catch (Exception e) {
-        	logger.error("save task failed.", e);
-        }
+        // LV save to db or get dbTask
+//        try {
+//        	existTask = taskDao.save(existTask);
+//        } catch (Exception e) {
+//        	logger.error("save task failed.", e);
+//        }
         
         if (existTask != null && !existTask.equals(task)) {
             throw new TaskIdDuplicateException(tmpId, "taskId conflict");
@@ -95,6 +95,14 @@ public class TaskRepository {
                 }
             }
         }
+        
+        // LV update to db
+        try {
+        	taskDao.save(existTask);
+        } catch (Exception e) {
+        	logger.error("save task failed.", e);
+        }
+        
         return existTask;
     }
 
@@ -109,10 +117,28 @@ public class TaskRepository {
     }
 
     public Task get(String taskId) {
-        return taskId == null ? null : taskMap.get(taskId);
+    	Task task = taskId == null ? null : taskMap.get(taskId);
+    	
+    	// LV get task from db
+        try {
+        	if (task == null) {
+        		task = taskDao.findOne(taskId);
+        	}
+        } catch (Exception e) {
+        	logger.error("get task failed.", e);
+        }
+    	
+        return task;
     }
 
     public boolean remove(String taskId) {
+    	// LV delete task from db
+        try {
+        	taskDao.delete(taskId);
+        } catch (Exception e) {
+        	logger.error("delete task failed.", e);
+        }
+    	
         return taskId != null && taskMap.remove(taskId) != null;
     }
 
@@ -133,6 +159,13 @@ public class TaskRepository {
                         }
                     }
                     task.setCdnStatus(cdnStatus);
+                    
+                    // LV update to db
+                    try {
+                    	taskDao.save(task);
+                    } catch (Exception e) {
+                    	logger.error("update task failed.", e);
+                    }
                 }
                 return true;
             }

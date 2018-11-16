@@ -43,7 +43,7 @@ public class MonitorService {
     private volatile float ioLoad;
     private static int cpuNum = Runtime.getRuntime().availableProcessors();
 
-    @PostConstruct
+    //@PostConstruct
     public void startMonitor() {
         logger.info("available processors count is {}", cpuNum);
 
