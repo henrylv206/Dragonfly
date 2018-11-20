@@ -19,7 +19,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.alibaba.dragonfly.supernode.common.Constants;
@@ -30,14 +29,10 @@ import com.alibaba.dragonfly.supernode.common.exception.AuthenticationWaitedExce
 import com.alibaba.dragonfly.supernode.common.exception.TaskIdDuplicateException;
 import com.alibaba.dragonfly.supernode.common.exception.UrlNotReachableException;
 import com.alibaba.dragonfly.supernode.common.util.HttpClientUtil;
-import com.alibaba.dragonfly.supernode.dao.TaskDao;
 
 @Repository
 public class TaskRepository {
 	
-	@Autowired
-	private TaskDao taskDao;
-
     private static final Logger logger = LoggerFactory.getLogger(TaskRepository.class);
 
     private final static ConcurrentHashMap<String, Task> taskMap = new ConcurrentHashMap<>();
@@ -96,13 +91,6 @@ public class TaskRepository {
             }
         }
         
-        // LV update to db
-        try {
-        	taskDao.save(existTask);
-        } catch (Exception e) {
-        	logger.error("save task failed.", e);
-        }
-        
         return existTask;
     }
 
@@ -119,25 +107,10 @@ public class TaskRepository {
     public Task get(String taskId) {
     	Task task = taskId == null ? null : taskMap.get(taskId);
     	
-    	// LV get task from db
-        try {
-        	if (task == null) {
-        		task = taskDao.findOne(taskId);
-        	}
-        } catch (Exception e) {
-        	logger.error("get task failed.", e);
-        }
-    	
         return task;
     }
 
     public boolean remove(String taskId) {
-    	// LV delete task from db
-        try {
-        	taskDao.delete(taskId);
-        } catch (Exception e) {
-        	logger.error("delete task failed.", e);
-        }
     	
         return taskId != null && taskMap.remove(taskId) != null;
     }
@@ -160,12 +133,6 @@ public class TaskRepository {
                     }
                     task.setCdnStatus(cdnStatus);
                     
-                    // LV update to db
-                    try {
-                    	taskDao.save(task);
-                    } catch (Exception e) {
-                    	logger.error("update task failed.", e);
-                    }
                 }
                 return true;
             }

@@ -15,17 +15,10 @@
  */
 package com.alibaba.dragonfly.supernode.common.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 import com.alibaba.dragonfly.supernode.common.enumeration.PeerTaskStatus;
 
-@Entity
 public class PeerTask {
 
-	@Id
-	private String keyId;
-	
 	private String cid;
 	
     private String taskId;
@@ -46,14 +39,6 @@ public class PeerTask {
 
     public PeerTask() {
     }
-
-	public String getKeyId() {
-		return keyId;
-	}
-
-	public void setKeyId(String keyId) {
-		this.keyId = keyId;
-	}
 
 	public boolean isSuccess() {
         return status != null && status.isSuccess();

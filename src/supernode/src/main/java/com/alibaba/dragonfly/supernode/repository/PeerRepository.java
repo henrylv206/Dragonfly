@@ -20,11 +20,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.alibaba.dragonfly.supernode.common.domain.PeerInfo;
-import com.alibaba.dragonfly.supernode.dao.PeerDao;
 
 @Repository
 public class PeerRepository {
@@ -33,20 +31,10 @@ public class PeerRepository {
 	
     private static final ConcurrentHashMap<String, PeerInfo> peerMap = new ConcurrentHashMap<String, PeerInfo>();
 
-    @Autowired
-	private PeerDao peerDao;
-    
     public boolean add(PeerInfo peerInfo) {
         String cid = peerInfo.getCid();
         if (StringUtils.isNotBlank(cid)) {
             peerMap.putIfAbsent(cid, peerInfo); // LV save to memory
-            
-            // LV save to db
-            try {
-            	peerDao.save(peerInfo);
-            } catch (Exception e) {
-            	logger.error("save peer failed.", e);
-            }
             
             return true;
         }
@@ -54,13 +42,7 @@ public class PeerRepository {
     }
 
     public boolean remove(String cid) {
-    	// LV delete from db
-        try {
-        	peerDao.delete(cid);
-        } catch (Exception e) {
-        	logger.error("delete peer failed.", e);
-        }
-        
+    	
         return cid != null && peerMap.remove(cid) != null;
     }
 
@@ -69,14 +51,6 @@ public class PeerRepository {
         if (cid != null) {
             peerInfo = peerMap.get(cid);
             
-            // LV get from db
-            try {
-            	if (peerInfo == null) {
-            		peerInfo = peerDao.findOne(cid);
-            	}
-            } catch (Exception e) {
-            	logger.error("get peer failed.", e);
-            }
         }
         
         return peerInfo;

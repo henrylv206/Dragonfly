@@ -17,13 +17,8 @@ package com.alibaba.dragonfly.supernode.common.domain;
 
 import java.util.Map;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Entity
 public class PeerInfo {
 
-	@Id
     private String cid; // LV dfget id
 	
     private String ip; // LV dfget ip

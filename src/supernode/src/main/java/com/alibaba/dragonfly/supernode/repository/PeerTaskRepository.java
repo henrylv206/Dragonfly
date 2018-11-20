@@ -22,12 +22,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.alibaba.dragonfly.supernode.common.domain.PeerTask;
 import com.alibaba.dragonfly.supernode.common.enumeration.PeerTaskStatus;
-import com.alibaba.dragonfly.supernode.dao.PeerTaskDao;
 
 @Repository
 public class PeerTaskRepository {
@@ -36,9 +34,6 @@ public class PeerTaskRepository {
 	
     private static final ConcurrentHashMap<String, PeerTask> peerTaskMap = new ConcurrentHashMap<String, PeerTask>();
 
-    @Autowired
-	private PeerTaskDao peerTaskDao;
-    
     public boolean add(PeerTask peerTask) {
         String key = makeKey(peerTask.getCid(), peerTask.getTaskId());
         if (key == null) {
@@ -46,33 +41,12 @@ public class PeerTaskRepository {
         }
         peerTaskMap.putIfAbsent(key, peerTask); // LV save to memory
         
-        //LV  save to db
-        try {
-        	peerTask.setKeyId(key);
-        	peerTaskDao.save(peerTask);
-        } catch (Exception e) {
-        	logger.error("save peer task failed.", e);
-        }
-        
         return true;
     }
 
     public PeerTask get(String cid, String taskId) {
         String key = makeKey(cid, taskId);
         PeerTask peerTask = key == null ? null : peerTaskMap.get(key);
-        
-        // LV get from db
-        try {
-        	if (peerTask == null) {
-        		peerTask = peerTaskDao.findOne(key);
-        		
-        		if (peerTask != null) {
-        			peerTaskMap.putIfAbsent(key, peerTask);
-        		}
-        	}
-        } catch (Exception e) {
-        	logger.error("get peer task failed.", e);
-        }
         
         return peerTask;
     }
@@ -86,20 +60,11 @@ public class PeerTaskRepository {
             }
         }
         
-        // TODO LV get from db
-        
         return cids;
     }
 
     public boolean remove(String taskId, String cid) {
         String key = makeKey(cid, taskId);
-        
-        // LV delete from db
-        try {
-        	peerTaskDao.delete(key);
-        } catch (Exception e) {
-        	logger.error("delete peer task failed.", e);
-        }
         
         return key != null && peerTaskMap.remove(key) != null;
     }
