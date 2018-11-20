@@ -71,13 +71,13 @@ public class ProgressServiceImpl implements ProgressService {
             logger.error(msg);
             return new ResultInfo(ResultCode.PARAM_ERROR, msg, null);
         }
-        boolean isSuperNode = cid.startsWith(Constants.SUPER_NODE_CID);
-        if (!isSuperNode) {
+        boolean isSuperNode = cid.startsWith(Constants.SUPER_NODE_CID); 
+        if (!isSuperNode) { // LV dfget
             progressRepo.addClientProgress(cid, new BitSet());
             progressRepo.addRunningPiece(cid, new HashMap<Integer, String>());
             progressRepo.addProducerLoad(cid, new AtomicInteger(0));
             progressRepo.addServiceDownInfo(cid, 0L);
-        } else {
+        } else { // LV supernode
             progressRepo.addCdnProgress(taskId, new BitSet());
         }
         return new ResultInfo(ResultCode.SUCCESS);

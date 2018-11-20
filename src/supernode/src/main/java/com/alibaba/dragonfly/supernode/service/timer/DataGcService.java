@@ -48,7 +48,7 @@ public class DataGcService {
     @Autowired
     private ProgressRepository progressRepo;
 
-    private static final ConcurrentHashMap<String, Long> lruInfoMap = new ConcurrentHashMap<String, Long>();
+    private static final ConcurrentHashMap<String, Long> lruInfoMap = new ConcurrentHashMap<String, Long>(); // LV last access time
     private static final int TASK_EXPIRE_TIME = 3 * 60 * 1000;
     private static final int LOCK_EXPIRE_TIME = 3 * 60 * 1000;
     private static int gc_part_count = 0;

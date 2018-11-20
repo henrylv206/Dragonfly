@@ -84,8 +84,8 @@ public class PeerRegistryServiceImpl implements PeerRegistryService {
         
         TaskRegistryResult taskRegistryResult = new TaskRegistryResult();
         try {
-            task = taskService.add(task);
-            dataGcService.updateAccessTime(taskId);
+            task = taskService.add(task); // LV add task
+            dataGcService.updateAccessTime(taskId); // LV update task's access time
 
             taskRegistryResult.setFileLength(task.getHttpFileLen());
             taskRegistryResult.setPieceSize(task.getPieceSize());
@@ -136,8 +136,8 @@ public class PeerRegistryServiceImpl implements PeerRegistryService {
     }
 
     private void registryPeerNode(ResultInfo resultInfo, TaskRegistryResult taskRegistryResult, String taskId, PeerInfo peerInfo, PeerTask peerTask) {
-        peerService.add(peerInfo);
-        peerTaskService.add(peerTask);
+        peerService.add(peerInfo); // LV add peer info
+        peerTaskService.add(peerTask); // LV add peer task
 
         ResultInfo initResult = progressService.initProgress(taskId, peerInfo.getCid());
         if (initResult.successCode()) {

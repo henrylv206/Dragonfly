@@ -178,8 +178,8 @@ public class PeerController {
     }
 
     private void debug(String msg, Object req, ResultInfo res) {
-        // TODO LV change to debug // if (log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.info("{}, req: {} res: {}", msg, JSON.toJSONString(req), JSON.toJSON(res));
-        //}
+        }
     }
 }
