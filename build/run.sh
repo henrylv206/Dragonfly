@@ -4,7 +4,8 @@
 echo "docker run --privileged --net=host -d -v /etc/hosts:/etc/node/hosts -e SUPERNODE_IPS=$supernode_ips -e REGISTRY=$registry -e PORT=$port j-hub.jd.com/jdevops/dragonfly-client:latest"
 
 # delete last time's hosts
-sed '/##dragonfly##$/ d' /etc/node/hosts > /etc/node/hosts
+sed '/##dragonfly##$/ d' /etc/node/hosts > host.tmp
+cat host.tmp > /etc/node/hosts
 
 # dfget config
 if [[ -z "${SUPERNODE_IPS}" ]]; then
@@ -30,7 +31,7 @@ if [[ -z "${REGISTRY}" ]]; then
   echo "${REGISTRY} must be registry, eg: j-hub.jd.com"
   exit 1
 else
-  echo 127.0.0.1 ${REGISTRY} ##dragonfly## >> /etc/node/hosts
+  echo "127.0.0.1 ${REGISTRY} ##dragonfly##" >> /etc/node/hosts
 fi
 
 # dfdaemon config
