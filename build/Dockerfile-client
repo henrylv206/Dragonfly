@@ -1,5 +1,7 @@
 FROM docker.io/centos:latest
 
+RUN yum install net-tools -y
+
 COPY df-client /root/df-client
 COPY run.sh /root/df-client/run
 
