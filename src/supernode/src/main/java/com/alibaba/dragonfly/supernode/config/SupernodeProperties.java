@@ -24,6 +24,8 @@ import com.alibaba.dragonfly.supernode.common.Constants;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -55,6 +57,16 @@ public class SupernodeProperties {
      */
     private int schedulerCorePoolSize = Constants.DEFAULT_SCHEDULER_CORE_POOL_SIZE;
 
+
+    /**
+     * LV download thread pool
+     */
+    @Value("${download.corePoolSize}")
+    private int corePoolSize;
+    @Value("${download.maximumPoolSize}")
+    private int maximumPoolSize;
+    
+    
     @PostConstruct
     public void init() {
         String cdnHome = baseHome + "/repo";
@@ -64,9 +76,25 @@ public class SupernodeProperties {
         try {
             Files.createDirectories(Paths.get(Constants.DOWNLOAD_HOME));
             Files.createDirectories(Paths.get(Constants.UPLOAD_HOME));
+            
+            
         } catch (Exception e) {
             log.error("create repo dir error", e);
             System.exit(1);
+        }
+        
+        
+        // LV config download thread pool
+        try {
+            if (corePoolSize > 0) {
+            	Constants.DOWNLOAD_CORE_POOL_SIZE = corePoolSize;
+            }
+            
+            if (maximumPoolSize > 0) {
+            	Constants.DOWNLOAD_MAX_POOL_SIZE = maximumPoolSize;
+            }
+        } catch (Exception e) {
+        	log.error("config download thread pool error: ", e);
         }
     }
 }

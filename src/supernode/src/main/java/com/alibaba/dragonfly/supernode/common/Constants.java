@@ -75,6 +75,11 @@ public final class Constants {
 
     //-------------------------------------------------------------------------
 
+    // LV download thread pool's default value
+    public static int DOWNLOAD_CORE_POOL_SIZE = 20;
+    public static int DOWNLOAD_MAX_POOL_SIZE = 100;
+    
+    
     private static String getSuperNodeCidPrefix() {
         return "cdnnode:" + localIp + "~";
     }

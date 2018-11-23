@@ -31,7 +31,13 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alibaba.dragonfly.supernode.common.CdnConstants;
+import com.alibaba.dragonfly.supernode.common.Constants;
 import com.alibaba.dragonfly.supernode.common.domain.DownloadMetaData;
 import com.alibaba.dragonfly.supernode.common.domain.Task;
 import com.alibaba.dragonfly.supernode.common.enumeration.CdnStatus;
@@ -40,11 +46,6 @@ import com.alibaba.dragonfly.supernode.common.enumeration.PeerPieceStatus;
 import com.alibaba.dragonfly.supernode.common.util.BeanPoolUtil;
 import com.alibaba.dragonfly.supernode.service.TaskService;
 import com.alibaba.dragonfly.supernode.service.cdn.util.PathUtil;
-
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class SuperWriter implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(SuperWriter.class);
@@ -62,7 +63,7 @@ public class SuperWriter implements Runnable {
     private static final TaskService taskService = BeanPoolUtil.getBean(TaskService.class);
 
     private static final ExecutorService pieceExecutor =
-        new ThreadPoolExecutor(20, 100, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
+        new ThreadPoolExecutor(Constants.DOWNLOAD_CORE_POOL_SIZE, Constants.DOWNLOAD_MAX_POOL_SIZE, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
 
     public SuperWriter(Task task, FutureTask<Boolean> future, BlockingQueue<ProtocolContent> qu,
         BlockingQueue<ByteBuffer> reusedCache) throws IOException {
