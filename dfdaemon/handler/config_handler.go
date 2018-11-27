@@ -27,7 +27,7 @@ func UpdateConfig(w http.ResponseWriter, req *http.Request) {
 	defer f.Close()
 
 	f.WriteString("[node]\n")
-	f.WriteString("addresses: " + config.Addresses)
+	f.WriteString("address=" + config.Addresses)
 
 	f.Sync()
 
