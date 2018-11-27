@@ -4,19 +4,19 @@ import (
 	"net/http"
 	"encoding/json"
 	"os"
-	"fmt"
+	"github.com/sirupsen/logrus"
 )
 
 // DebugInfo update config file: /etc/dragonfly.conf
 func UpdateConfig(w http.ResponseWriter, req *http.Request) {
-	fmt.Printf("access:%s", req.URL.String())
+	logrus.Infof("access:%s", req.URL.String())
 
 	// write config to file: /etc/dragonfly.conf
 	var config Config
 	json.NewDecoder(req.Body).Decode(&config)
 
 	// write to config file
-	fmt.Printf("config addresses: %s", config.Addresses)
+	logrus.Infof("config addresses: %s", config.Addresses)
 
 	f, err := os.Create("/etc/dragonfly.conf")
 
@@ -33,7 +33,7 @@ func UpdateConfig(w http.ResponseWriter, req *http.Request) {
 
 	json.NewEncoder(w).Encode("{'status': 'success'}")
 
-	fmt.Printf("update config finished.")
+	logrus.Infof("update config finished.")
 }
 
 type Config struct {
