@@ -93,6 +93,8 @@ public class SupernodeProperties {
             if (maximumPoolSize > 0) {
             	Constants.DOWNLOAD_MAX_POOL_SIZE = maximumPoolSize;
             }
+            
+            log.info("download thread pool, corePoolSize: " + corePoolSize + ", maximumPoolSize: " + maximumPoolSize);
         } catch (Exception e) {
         	log.error("config download thread pool error: ", e);
         }
