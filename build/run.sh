@@ -1,5 +1,15 @@
 #! /bin/bash
 
+trap cleanup 15
+
+# gracefully stop container and restore hosts
+cleanup() {
+    echo "gracefully stop dragonfly-client..."
+
+    sed '/##dragonfly##$/ d' /etc/node/hosts > host.tmp
+    cat host.tmp > /etc/node/hosts
+}
+
 # usage
 echo "docker run --privileged --net=host -d -v /etc/hosts:/etc/node/hosts -e SUPERNODE_IPS=$supernode_ips -e REGISTRY=$registry -e PORT=$port j-hub.jd.com/jdevops/dragonfly-client:latest"
 
@@ -35,5 +45,9 @@ else
 fi
 
 # dfdaemon config
-dfdaemon --port ${port}
+dfdaemon --port ${port} &
+
+wait
+
+cleanup
 
