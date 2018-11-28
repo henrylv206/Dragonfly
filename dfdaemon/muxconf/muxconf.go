@@ -18,6 +18,9 @@ import (
 	"net/http"
 
 	"github.com/alibaba/Dragonfly/dfdaemon/handler"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+
 )
 
 // InitMux initialize web router of dfdaemon
@@ -33,4 +36,7 @@ func InitMux() {
 	for key, value := range router {
 		http.HandleFunc(key, value)
 	}
+
+	// prometheus metrics
+	http.Handle("/metrics", promhttp.Handler())
 }

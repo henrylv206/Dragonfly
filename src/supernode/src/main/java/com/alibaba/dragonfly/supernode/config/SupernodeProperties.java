@@ -61,9 +61,9 @@ public class SupernodeProperties {
     /**
      * LV download thread pool
      */
-    @Value("${download.corePoolSize}")
+    @Value("${download.corePoolSize:20}")
     private int corePoolSize;
-    @Value("${download.maximumPoolSize}")
+    @Value("${download.maximumPoolSize:100}")
     private int maximumPoolSize;
     
     
