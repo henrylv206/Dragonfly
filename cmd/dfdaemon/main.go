@@ -24,6 +24,8 @@ import (
 
 	"github.com/alibaba/Dragonfly/cmd/dfdaemon/options"
 	"github.com/alibaba/Dragonfly/dfdaemon/initializer"
+
+	_ "../../dfdaemon/prometheus"
 )
 
 func main() {
