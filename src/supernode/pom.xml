@@ -95,8 +95,27 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <!-- test end -->
+        
+        <!-- The prometheus client -->
+		<dependency>
+		  <groupId>io.prometheus</groupId>
+		  <artifactId>simpleclient</artifactId>
+		  <version>0.5.0</version>
+		</dependency>
+		<!-- Hotspot JVM metrics-->
+		<dependency>
+		  <groupId>io.prometheus</groupId>
+		  <artifactId>simpleclient_hotspot</artifactId>
+		  <version>0.5.0</version>
+		</dependency>
+		
+		<dependency>
+		  <groupId>io.prometheus</groupId>
+		  <artifactId>simpleclient_common</artifactId>
+		  <version>0.5.0</version>
+		</dependency>
+		<!-- The prometheus client end -->
         
     </dependencies>
 
