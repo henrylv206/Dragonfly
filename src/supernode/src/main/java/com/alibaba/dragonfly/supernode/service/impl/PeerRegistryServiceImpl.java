@@ -68,10 +68,6 @@ public class PeerRegistryServiceImpl implements PeerRegistryService {
         ResultInfo resultInfo = new ResultInfo();
         validateParams(sourceUrl, port, path, peerInfo);
         
-        // TODO all_registry_task_requests_totals
-        // type: counter
-        
-        
         // LV generate current super node's ip and cid
         if (Constants.localIp == null) {
             Constants.localIp = superNodeIp;
@@ -97,7 +93,7 @@ public class PeerRegistryServiceImpl implements PeerRegistryService {
                 task.getPieceSize());
             registryPeerNode(resultInfo, taskRegistryResult, taskId, peerInfo, peerTask);
             if (resultInfo.successCode()) {
-                if (!cdnManager.triggerCdnSyncAction(taskId)) {
+                if (!cdnManager.triggerCdnSyncAction(taskId)) { // TODO LV trigger task download???
                     resultInfo.withCode(ResultCode.SYSTEM_ERROR).withMsg("trigger fail!");
                 }
             }

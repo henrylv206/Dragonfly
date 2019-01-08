@@ -59,12 +59,12 @@ public class TaskRepository {
         
         existTask = existTask != null ? existTask : task; //TODO LV null? taskMap[taskId] is still null?
 
-        if (existTask.isNotReachable()) {
+        if (existTask.isNotReachable()) {  // LV 1. why do this twice?
             throw new UrlNotReachableException();
         }
 
         synchronized (existTask) {
-            if (existTask.isNotReachable()) {
+            if (existTask.isNotReachable()) {  // LV 2. why do this twice?
                 throw new UrlNotReachableException();
             }
             if (existTask.getHttpFileLen() == null) {

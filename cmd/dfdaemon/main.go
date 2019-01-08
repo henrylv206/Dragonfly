@@ -25,7 +25,7 @@ import (
 	"github.com/alibaba/Dragonfly/cmd/dfdaemon/options"
 	"github.com/alibaba/Dragonfly/dfdaemon/initializer"
 
-	_ "github.com/alibaba/Dragonfly/dfdaemon/prometheus"
+	prome "github.com/alibaba/Dragonfly/dfdaemon/prometheus"
 )
 
 func main() {
@@ -34,6 +34,9 @@ func main() {
 	flag.Parse()
 
 	initializer.Init(options)
+
+	prome.CpuTemp.Set(0)
+
 
 	// if CommandLine.MaxProcs <= 0, programs run with GOMAXPROCS set to the number of cores available
 	if options.MaxProcs > 0 {

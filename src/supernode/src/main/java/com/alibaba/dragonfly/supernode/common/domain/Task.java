@@ -29,7 +29,7 @@ public class Task {
     
     private String sourceUrl;
     private String taskUrl;
-    private String bizId;
+    private String bizId; // LV identifier how to make?
     private String md5;
 
     private Long fileLength;
@@ -57,7 +57,7 @@ public class Task {
     
     private Set<String> authIps;
     
-    private String curIp;
+    private String curIp; // LV dfget ip
 
     private static int AUTH_IP_LIMIT = 5;
 
