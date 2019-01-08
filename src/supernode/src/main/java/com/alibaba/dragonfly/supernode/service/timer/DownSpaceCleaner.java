@@ -31,6 +31,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.alibaba.dragonfly.supernode.common.MetricConsts;
 import com.alibaba.dragonfly.supernode.common.domain.FileMetaData;
 import com.alibaba.dragonfly.supernode.common.exception.DataNotFoundException;
 import com.alibaba.dragonfly.supernode.service.TaskService;
@@ -38,13 +46,6 @@ import com.alibaba.dragonfly.supernode.service.cdn.FileMetaDataService;
 import com.alibaba.dragonfly.supernode.service.cdn.util.PathUtil;
 import com.alibaba.dragonfly.supernode.service.lock.LockConstants;
 import com.alibaba.dragonfly.supernode.service.lock.LockService;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
 
 @Service
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -219,6 +220,10 @@ public class DownSpaceCleaner {
         try {
             boolean fullGc = force;
             long usableSpace = getUsableSpace();
+            
+            // metrics
+            MetricConsts.currentDisks.set(usableSpace);
+            
             if (!fullGc) {
                 if (usableSpace <= fullGcThreshold) {
                     fullGc = true;

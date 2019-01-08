@@ -19,11 +19,12 @@ import java.io.File;
 
 import javax.annotation.PostConstruct;
 
-import com.alibaba.dragonfly.supernode.common.Constants;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import com.alibaba.dragonfly.supernode.common.Constants;
+import com.alibaba.dragonfly.supernode.common.MetricConsts;
 
 @Service
 public class DiskSpaceGcTimer {
@@ -44,6 +45,9 @@ public class DiskSpaceGcTimer {
         downSpaceCleaner.fillConf(DownSpaceCleaner.SPACE_TYPE_DISK, Constants.DOWNLOAD_HOME,
             5 * 1024 * 1024 * 1024L,
             youngGcThreshold, 1, 2 * 3600 * 1000L);
+        
+        // metrics
+        MetricConsts.totalDisks.set(totalSpace);
     }
 
     /**

@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.alibaba.dragonfly.supernode.common.Constants;
+import com.alibaba.dragonfly.supernode.common.MetricConsts;
 import com.alibaba.dragonfly.supernode.common.domain.Task;
 import com.alibaba.dragonfly.supernode.common.enumeration.CdnStatus;
 import com.alibaba.dragonfly.supernode.common.exception.AuthenticationRequiredException;
@@ -36,7 +37,7 @@ public class TaskRepository {
     private static final Logger logger = LoggerFactory.getLogger(TaskRepository.class);
 
     private final static ConcurrentHashMap<String, Task> taskMap = new ConcurrentHashMap<>();
-
+    
     public Task add(Task task) throws TaskIdDuplicateException, UrlNotReachableException, AuthenticationRequiredException, AuthenticationWaitedException {
         String tmpId = task.getTaskId();
         Task existTask = taskMap.putIfAbsent(tmpId, task); // LV save to memory
@@ -47,6 +48,10 @@ public class TaskRepository {
 //        } catch (Exception e) {
 //        	logger.error("save task failed.", e);
 //        }
+        
+        // metrics: task
+        MetricConsts.currentTasks.set(taskMap.size());
+        MetricConsts.totalTasks.inc();
         
         if (existTask != null && !existTask.equals(task)) {
             throw new TaskIdDuplicateException(tmpId, "taskId conflict");

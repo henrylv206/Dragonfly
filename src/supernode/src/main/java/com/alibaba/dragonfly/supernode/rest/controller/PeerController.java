@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.dragonfly.supernode.common.MetricConsts;
 import com.alibaba.dragonfly.supernode.common.domain.PeerInfo;
 import com.alibaba.dragonfly.supernode.common.enumeration.PeerPieceStatus;
 import com.alibaba.dragonfly.supernode.common.exception.ValidateException;
@@ -65,6 +66,9 @@ public class PeerController {
 
     @PostMapping(value = "/registry")
     public ResultInfo doRegistry( RegistryRequest req) { // LV Content-Type: application/x-www-form-urlencoded
+    	// metrics: api request
+    	MetricConsts.apiReqeusts.inc();
+    	
         ResultInfo res = null;
         try {
             res = peerRegistryService.registryTask(req.getRawUrl(),
@@ -96,6 +100,9 @@ public class PeerController {
 
     @GetMapping(value = "/task")
     public ResultInfo pullPieceTask(PullPieceTaskRequest req) {
+    	// metrics: api request
+    	MetricConsts.apiReqeusts.inc();
+    	
         ResultInfo res = null;
         long start = System.currentTimeMillis();
         try {
@@ -125,6 +132,9 @@ public class PeerController {
 
     @GetMapping(value = "/piece/suc")
     public ResultInfo reportPiece(ReportPieceRequest req) {
+    	// metrics: api request
+    	MetricConsts.apiReqeusts.inc();
+    	
         ResultInfo res = null;
         try {
             String taskId = req.getTaskId();
@@ -158,6 +168,9 @@ public class PeerController {
 
     @GetMapping(value = "/service/down")
     public ResultInfo reportServiceDown(ReportServiceDownRequest req) {
+    	// metrics: api request
+    	MetricConsts.apiReqeusts.inc();
+    	
         ResultInfo res = null;
         try {
             String cid = req.getCid();

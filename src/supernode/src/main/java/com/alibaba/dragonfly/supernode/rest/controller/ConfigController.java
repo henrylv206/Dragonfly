@@ -17,6 +17,7 @@
 package com.alibaba.dragonfly.supernode.rest.controller;
 
 import com.alibaba.dragonfly.supernode.common.Constants;
+import com.alibaba.dragonfly.supernode.common.MetricConsts;
 import com.alibaba.dragonfly.supernode.common.util.NetConfigNotification;
 import com.alibaba.dragonfly.supernode.common.view.ResultCode;
 import com.alibaba.dragonfly.supernode.common.view.ResultInfo;
@@ -40,6 +41,9 @@ public class ConfigController {
     @PostMapping(value = "/super/config")
     public ResultInfo update(@RequestParam(required = false) Integer netRate,
                              @RequestParam(required = false) Boolean debug) {
+    	// metrics: api request
+    	MetricConsts.apiReqeusts.inc();
+    	
         // netRate unit is MB/s
         if (netRate != null) {
             netConfigNotification.freshNetRate(netRate);

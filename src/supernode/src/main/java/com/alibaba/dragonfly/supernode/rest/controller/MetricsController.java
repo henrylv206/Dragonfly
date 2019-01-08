@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.dragonfly.supernode.common.MetricConsts;
 import com.alibaba.dragonfly.supernode.service.impl.MetricsService;
 
 /**
@@ -31,9 +32,12 @@ public class MetricsController {
 	@Autowired
 	private MetricsService metricsService;
 	
-    @GetMapping(value = "/metrics")
+    @GetMapping(value = "/peer/metrics")
     public String metrics() {
-    	 
+    	
+    	// metrics: api request
+    	MetricConsts.apiReqeusts.inc();
+    	
     	String samples = metricsService.collect();
     	
     	return samples;

@@ -68,6 +68,10 @@ public class PeerRegistryServiceImpl implements PeerRegistryService {
         ResultInfo resultInfo = new ResultInfo();
         validateParams(sourceUrl, port, path, peerInfo);
         
+        // TODO all_registry_task_requests_totals
+        // type: counter
+        
+        
         // LV generate current super node's ip and cid
         if (Constants.localIp == null) {
             Constants.localIp = superNodeIp;

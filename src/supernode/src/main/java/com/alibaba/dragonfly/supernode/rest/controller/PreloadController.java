@@ -19,6 +19,8 @@ package com.alibaba.dragonfly.supernode.rest.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.dragonfly.supernode.common.MetricConsts;
+
 /**
  * @author lowzj
  */
@@ -26,6 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class PreloadController {
     @GetMapping(value = "/checkpreload.htm")
     public String checkHealth() {
+    	// metrics: api request
+    	MetricConsts.apiReqeusts.inc();
+    	
         return "success";
     }
 }

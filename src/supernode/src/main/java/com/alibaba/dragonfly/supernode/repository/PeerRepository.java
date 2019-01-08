@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.alibaba.dragonfly.supernode.common.MetricConsts;
 import com.alibaba.dragonfly.supernode.common.domain.PeerInfo;
 
 @Repository
@@ -36,13 +37,18 @@ public class PeerRepository {
         if (StringUtils.isNotBlank(cid)) {
             peerMap.putIfAbsent(cid, peerInfo); // LV save to memory
             
+            // metrics: peer
+            MetricConsts.totalPeers.inc();
+            
             return true;
         }
         return false;
     }
 
     public boolean remove(String cid) {
-    	
+    	// metrics: peer
+        MetricConsts.totalPeers.dec();
+        
         return cid != null && peerMap.remove(cid) != null;
     }
 

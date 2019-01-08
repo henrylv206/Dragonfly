@@ -2,18 +2,42 @@ package prometheus
 
 import (
 	"github.com/prometheus/client_golang/prometheus"
+	"time"
 )
 
+const (
+	MaxAge time.Duration = 10 * time.Minute
+
+)
+
+var (
+	DefaultRegister prometheus.Registerer = prometheus.DefaultRegisterer
+
+)
+
+
+
+var cpuTemp = prometheus.NewGauge(prometheus.GaugeOpts{
+	Name: "cpu_temperature_celsius",
+	Help: "Current temperature of the CPU.",
+})
+
 func init() {
+
+	cpuTemp.Set(30)
+
+	prometheus.MustRegister(cpuTemp)
+
 	buildInfo := prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "kubernetes_build_info",
-			Help: "A metric with a constant '1' value labeled by major, minor, git version, git commit, git tree state, build date, Go version, and compiler from which Kubernetes was built, and platform on which it is running.",
+			Name: "dfdaemon_build_info",
+			Help: "A metric with a constant '1' value labeled by major, minor.",
 		},
 		[]string{"major", "minor"},
 	)
 
-	buildInfo.WithLabelValues("2018-10-29", "0.0.1").Set(1)
+	buildInfo.WithLabelValues("2018-12", "v0.2.0").Set(1)
 
 	prometheus.MustRegister(buildInfo)
+
 }

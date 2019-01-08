@@ -38,6 +38,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.dragonfly.supernode.common.CdnConstants;
 import com.alibaba.dragonfly.supernode.common.Constants;
+import com.alibaba.dragonfly.supernode.common.MetricConsts;
 import com.alibaba.dragonfly.supernode.common.domain.DownloadMetaData;
 import com.alibaba.dragonfly.supernode.common.domain.Task;
 import com.alibaba.dragonfly.supernode.common.enumeration.CdnStatus;
@@ -71,6 +72,7 @@ public class SuperWriter implements Runnable {
         this.future = future;
         this.contQu = qu;
         this.reusedCache = reusedCache;
+        
     }
 
     @Override
@@ -174,6 +176,9 @@ public class SuperWriter implements Runnable {
             this.pieceSize = pieceSize;
             this.waitTime = pieceSize / (64 * 1024);
             this.pieceSizeBit = pieceSize << 4;
+            
+            // metrics
+            MetricConsts.currentThreads.inc();
         }
 
         @Override
@@ -210,6 +215,9 @@ public class SuperWriter implements Runnable {
                 logger.error("write piece error for taskId:{}", taskId, e);
             } finally {
                 downLatch.countDown();
+                
+                // metrics
+                MetricConsts.currentThreads.dec();
             }
         }
 
