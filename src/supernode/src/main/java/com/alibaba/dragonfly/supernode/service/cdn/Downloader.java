@@ -68,13 +68,13 @@ public class Downloader implements Callable<Boolean> {
             httpFileLength = -1L;
         }
 
-        CacheResult cacheResult = cacheDetector.detectCache(task);
+        CacheResult cacheResult = cacheDetector.detectCache(task); // LV 扫描缓存，记录缓存状态
         int startPieceNum = cacheResult.getStartPieceNum();
         if (startPieceNum == -1) {
             logger.info("cache full hit for taskId:{} on local", taskId);
             return true;
         }
-        int pieceContSize = task.getPieceSize() - Constants.PIECE_WRAP_SIZE;
+        int pieceContSize = task.getPieceSize() - Constants.PIECE_WRAP_SIZE; // LV 分块内容大小
 
         InputStream is = null;
         HttpURLConnection connection = null;
