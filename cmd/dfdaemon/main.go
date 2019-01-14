@@ -35,8 +35,8 @@ func main() {
 
 	initializer.Init(options)
 
-	prome.CpuTemp.Set(0)
-
+	// dfdaemon 存活状态
+	prome.CurrentStatus.Set(1)
 
 	// if CommandLine.MaxProcs <= 0, programs run with GOMAXPROCS set to the number of cores available
 	if options.MaxProcs > 0 {
